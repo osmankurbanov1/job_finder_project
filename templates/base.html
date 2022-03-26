@@ -22,9 +22,21 @@
 
         </ul>
         <ul class="navbar-nav col-2 justify-content-end">
+          {% if request.user.is_authenticated %}
           <li class="nav-item active">
-            <a href="#" class="nav-link font-weight-bold">Вход</a>
+            <a href="/login" class="nav-link font-weight-bold">{{user.username}}</a>
           </li>
+          <li class="nav-item active">
+            <p class="nav-link font-weight-bold"> | </p>
+          </li>
+          <li class="nav-item active">
+            <a href="/logout" class="nav-link font-weight-bold">Выйти</a>
+          </li>
+            {% else %}
+          <li class="nav-item active">
+            <a href="/login" class="nav-link font-weight-bold">Вход</a>
+          </li>
+          {% endif %}
         </ul>
       </div>
     </nav>
