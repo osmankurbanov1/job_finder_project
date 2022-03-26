@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %} REGISTER | JOB FINDER {% endblock %}
+
+{% block body %}
+
+<div class="text-center mt-5 b-1">
+    <h1 class="h3 mb-3 font-weight-normal">JOB FINDER</h1>
+    <p class="h5 font-weight-light">Создайте аккаунт</p>
+</div>
+
+{% load crispy_forms_tags %}
+
+{% crispy form "bootstrap4" %}
+
+<div class="mt-4 text-center"><p>Есть аккаунт? <a href="/login">Войдите!</a></p></div>
+
+{% endblock %}
