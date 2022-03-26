@@ -1,3 +1,4 @@
+from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 from vacancy_app.models import Specialty, Vacancy
 from company_app.models import Company
@@ -38,3 +39,29 @@ class VacancyByCategoryList(ListView):
         context['profession_param'] = profession_param
         context['vacancy_counter'] = Vacancy.objects.filter(specialty__code=profession_param).count()
         return context
+
+from django.views.generic import CreateView
+from django.contrib.auth.views import LoginView
+from .forms import RegisterUserForm, LoginForm
+from django.contrib.auth.forms import AuthenticationForm
+
+
+class MyLoginView(LoginView):
+    form_class = LoginForm
+    template_name = 'vacancy_app/login.html'
+
+
+
+class MySignupView(CreateView):
+    form_class = RegisterUserForm
+    success_url = 'login'
+    template_name = 'vacancy_app/register.html'
+
+
+#def show_login_page(request):
+#    return render(request, 'vacancy_app/login.html')
+
+
+#def show_register_page(request):
+#    return render(request, 'vacancy_app/register.html')
+
