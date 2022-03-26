@@ -19,6 +19,7 @@ from vacancy_app import views as vacancy_views
 from company_app import views as company_views
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.auth.views import LogoutView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,6 +27,14 @@ urlpatterns = [
     path('vacancies/', include('vacancy_app.urls')),
     path('companies/<int:id>', company_views.CompanyDetail.as_view(), name='company_detail'),
 ]
+
+urlpatterns += [
+    path('login', vacancy_views.MyLoginView.as_view()),
+    path('register', vacancy_views.MySignupView.as_view()),
+    path('logout', LogoutView.as_view()),
+]
+
+
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,
