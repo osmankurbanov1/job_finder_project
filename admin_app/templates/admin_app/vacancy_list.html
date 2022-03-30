@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %} Создать карточку компании | JOB FINDER {% endblock %}
+{% block head %}
+{{block.super}}
+<style>
+    body {
+      background-color: #F6F2E6;
+    }
+  </style>
+{% endblock %}
+
+{% block body %}
+{{block.super}}
+
+  <main class="container mt-3 pb-5">
+    <div class="row mt-5">
+      <div class="col-12 col-lg-4">
+        <aside class="pt-3 pb-4 px-4 mb-5 card">
+          <h1 class="h4 pt-2 pb-2">Моя компания</h1>
+          <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            {% if company %}
+            <a class="nav-link" href="{% url 'my_company' %}">1. Информация о&nbsp;компании</a>
+            {% else %}
+            <a class="nav-link" href="{% url 'company_create' %}">1. Информация о&nbsp;компании</a>
+            {% endif %}
+            <a class="nav-link active" href="{% url 'company_vacancies_list' %}">2. Вакансии</a>
+          </div>
+        </aside>
+      </div>
+      <div class="col-12 col-lg-8">
+        <div class="card">
+          <div class="card-body px-4 pb-4">
+            <section class="tab-pane fade show active">
+              <h2 class="h4 pt-2 pb-3">Вакансии</h2>
+
+              {% if vacancies %}
+              {% for vacancy in vacancies %}
+              <div class="card mt-3">
+                <div class="card-body px-4">
+                  <div class="row align-items-center">
+                    <div class="col-6 col-lg-8">
+                      <a href="{% url 'company_vacancy_detail' vacancy.id %}" class="mb-1">{{vacancy.title}}</a>
+                      <p class="mb-1">
+                        <span class="mr-4">{{vacancy.salary_from}} - {{vacancy.salary_to}} Р</span><a href="{% url 'company_vacancy_detail' vacancy.id %}#application" class="text-info">{{vacancy.applications.count}} отклика</a>
+                      </p>
+                    </div>
+                    <div class="col-6 col-lg-4 text-right">
+                      <a href="{% url 'company_vacancy_detail' vacancy.id %}" class="btn btn-outline-info">Изменить</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {% endfor %}
+              <div class="pt-3">
+              <a href="{% url 'company_vacancy_create' %}" class="btn btn-primary btn-lg btn-block">Добавить вакансию</a>
+              </div>
+              {% else %}
+
+              {% endif %}
+              {% if company and not vacancies %}
+              <p class="alert alert-info" role="alert">
+                У вас пока нет вакансий, но вы можете создать первую!
+              </p>
+              <a href="{% url 'company_vacancy_create' %}" class="btn btn-primary btn-lg btn-block" >Добавить вакансию</a>
+              {% endif %}
+
+              {% if not company %}
+              <p class="alert alert-info" role="alert">
+                У вас пока нет вакансий, но вы можете создать первую!<br> Для этого создайте карточку компании
+              </p>
+              <a href="{% url 'company_create' %}" class="btn btn-primary btn-lg btn-block" >Создать карточку компании</a>
+              {% endif %}
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+{% include 'scripts.html' %}
+{% endblock %}
