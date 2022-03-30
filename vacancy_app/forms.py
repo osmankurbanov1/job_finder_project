@@ -1,47 +1,29 @@
 from crispy_forms.layout import Submit, Layout, Row, Column
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth.models import User
 from crispy_forms.helper import FormHelper
 from django import forms
+from .models import Application
 
 
-class LoginForm(AuthenticationForm):
-    username = forms.CharField(label='Логин', widget=forms.TextInput(attrs={'class': 'form-input'}))
-    password = forms.CharField(label='Пароль', widget=forms.PasswordInput(attrs={'class': 'form-input'}))
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_method = 'post'
-        self.helper.layout = Layout(
-            Row(
-                Column('username', css_class='col-8 col-lg-4 offset-2 offset-lg-4'),
-                Column('password', css_class='col-8 col-lg-4 offset-2 offset-lg-4'),
-            ),
-            Submit('submit', 'Войти', css_class='col-8 col-lg-4 offset-2 offset-lg-4')
-        )
-
-class RegisterUserForm(UserCreationForm):
-    username = forms.CharField(label='Логин', widget=forms.TextInput(attrs={'class': 'form-input'}))
-    password1 = forms.CharField(label='Пароль', widget=forms.PasswordInput(attrs={'class': 'form-input'}))
-    first_name = forms.CharField(label='Имя', widget=forms.TextInput(attrs={'class': 'form-input'}))
-    last_name = forms.CharField(label='Фамилия', widget=forms.TextInput(attrs={'class': 'form-input'}))
-
-    # class Meta:
-    #     model = User
-    #     fields = ('username', 'first_name', 'last_name', 'password1')
+class AddApplication(forms.ModelForm):
+    class Meta:
+        model = Application
+        fields = ['written_username', 'written_phone', 'written_cover_letter']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        del self.fields['password2']
+        self.fields['written_username'].label = 'Вас зовут'
+        self.fields['written_phone'].label = 'Ваш телефон'
+        self.fields['written_cover_letter'].label = 'Сопроводительное письмо'
+
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         self.helper.layout = Layout(
+
             Row(
-                Column('username', css_class='col-8 col-lg-4 offset-2 offset-lg-4'),
-                Column('first_name', css_class='col-8 col-lg-4 offset-2 offset-lg-4'),
-                Column('last_name', css_class='col-8 col-lg-4 offset-2 offset-lg-4'),
-                Column('password1', css_class='col-8 col-lg-4 offset-2 offset-lg-4'),
+                Column('written_username', css_class='form-group col-md-12 mb-0'),
+                Column('written_phone', css_class='form-group col-md-12 mb-0'),
+                Column('written_cover_letter', css_class='form-group col-md-12 mb-0'),
             ),
-            Submit('submit', 'Зарегистрироваться', css_class='col-8 col-lg-4 offset-2 offset-lg-4')
+
+            Submit('submit', 'Откликнуться', css_class='col-8 col-lg-4 offset-2 offset-lg-4')
         )
