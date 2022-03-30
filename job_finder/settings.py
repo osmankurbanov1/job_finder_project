@@ -27,7 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -40,6 +39,7 @@ INSTALLED_APPS = [
     'vacancy_app',
     'company_app',
     'crispy_forms',
+    'admin_app',
 ]
 
 MIDDLEWARE = [
@@ -51,6 +51,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+MIDDLEWARE += ('crum.CurrentRequestUserMiddleware',)
 
 ROOT_URLCONF = 'job_finder.urls'
 
@@ -134,5 +136,4 @@ MEDIA_COMPANY_IMAGE_DIR = 'company_images'
 MEDIA_SPECIALITY_IMAGE_DIR = 'speciality_images'
 
 LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/login'
-
+LOGOUT_REDIRECT_URL = '/'
