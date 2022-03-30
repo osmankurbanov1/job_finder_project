@@ -12,7 +12,6 @@ class VacancyAdmin(admin.ModelAdmin):
     pass
     
 
-
 class ApplicationAdmin(admin.ModelAdmin):
     pass
 
