@@ -13,7 +13,8 @@ class Specialty(models.Model):
     objects = models.Manager()
 
     def __str__(self):
-        return f'{self.code} - {self.title}'
+        return f'{self.title}'
+
 
 class Vacancy(models.Model):
     title = models.CharField(max_length=100)
@@ -34,9 +35,9 @@ class Vacancy(models.Model):
 class Application(models.Model):
     written_username = models.CharField(max_length=20)
     written_phone = models.CharField(max_length=20)
-    written_cover_letter = models.TextField
-    vacancy = models.ForeignKey(Vacancy, on_delete=models.CASCADE, related_name='applications')
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='applications')
+    written_cover_letter = models.TextField(null=True)
+    vacancy = models.ForeignKey(Vacancy, on_delete=models.CASCADE, related_name='applications', null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='applications', null=True)
 
     objects = models.Manager()
 
