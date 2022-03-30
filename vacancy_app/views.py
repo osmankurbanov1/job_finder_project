@@ -1,14 +1,27 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView
 from vacancy_app.models import Specialty, Vacancy
 from company_app.models import Company
+from .forms import AddApplication
+
 # Create your views here.
 
 
-class VacancyDetail(DetailView):
+class VacancyDetail(DetailView, CreateView):
     model = Vacancy
     template_name = 'vacancy_app/vacancy.html'
     context_object_name = 'vacancy'
+
+    form_class = AddApplication
+
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        if self.request.user.is_authenticated:
+            obj.user = self.request.user
+        obj.vacancy = Vacancy.objects.get(id=self.kwargs['pk'])
+        obj.save()
+        return HttpResponseRedirect('send')
 
 
 class SpecialtyHome(ListView):
@@ -19,6 +32,11 @@ class SpecialtyHome(ListView):
     def get_context_data(self, **kwargs):
         context = super(SpecialtyHome, self).get_context_data(**kwargs)
         context['companies'] = Company.objects.all()
+        if self.request.user.is_authenticated:
+            try:
+                context['company'] = Company.objects.get(owner=self.request.user)
+            except Company.DoesNotExist:
+                return context
         return context
 
 
@@ -40,28 +58,6 @@ class VacancyByCategoryList(ListView):
         context['vacancy_counter'] = Vacancy.objects.filter(specialty__code=profession_param).count()
         return context
 
-from django.views.generic import CreateView
-from django.contrib.auth.views import LoginView
-from .forms import RegisterUserForm, LoginForm
-from django.contrib.auth.forms import AuthenticationForm
 
-
-class MyLoginView(LoginView):
-    form_class = LoginForm
-    template_name = 'vacancy_app/login.html'
-
-
-
-class MySignupView(CreateView):
-    form_class = RegisterUserForm
-    success_url = 'login'
-    template_name = 'vacancy_app/register.html'
-
-
-#def show_login_page(request):
-#    return render(request, 'vacancy_app/login.html')
-
-
-#def show_register_page(request):
-#    return render(request, 'vacancy_app/register.html')
-
+def sent(request, pk):
+    return render(request, 'vacancy_app/sent.html', context={'pk': pk})
