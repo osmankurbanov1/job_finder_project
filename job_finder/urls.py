@@ -17,23 +17,24 @@ from django.contrib import admin
 from django.urls import path, include
 from vacancy_app import views as vacancy_views
 from company_app import views as company_views
+from admin_app import views as admin_views
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth.views import LogoutView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', vacancy_views.SpecialtyHome.as_view()),
+    path('', vacancy_views.SpecialtyHome.as_view(), name='index'),
     path('vacancies/', include('vacancy_app.urls')),
     path('companies/<int:id>', company_views.CompanyDetail.as_view(), name='company_detail'),
+    path('mycompany/', include('admin_app.urls')),
 ]
 
 urlpatterns += [
-    path('login', vacancy_views.MyLoginView.as_view()),
-    path('register', vacancy_views.MySignupView.as_view()),
-    path('logout', LogoutView.as_view()),
+    path('login', admin_views.MyLoginView.as_view(), name='login'),
+    path('register', admin_views.MySignupView.as_view(), name='register'),
+    path('logout', LogoutView.as_view(), name='logout'),
 ]
-
 
 
 if settings.DEBUG:
