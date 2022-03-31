@@ -32,11 +32,6 @@ class SpecialtyHome(ListView):
     def get_context_data(self, **kwargs):
         context = super(SpecialtyHome, self).get_context_data(**kwargs)
         context['companies'] = Company.objects.all()
-        if self.request.user.is_authenticated:
-            try:
-                context['company'] = Company.objects.get(owner=self.request.user)
-            except Company.DoesNotExist:
-                return context
         return context
 
 
