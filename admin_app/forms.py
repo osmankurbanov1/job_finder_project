@@ -4,6 +4,59 @@ from crispy_forms.layout import Submit, Layout, Row, Column
 from company_app.views import Company
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from vacancy_app.views import Vacancy
+from .models import Resume
+
+
+class AddResumeForm(forms.ModelForm):
+    class Meta:
+        model = Resume
+        fields = ['name', 'surname', 'status', 'salary', 'specialty', 'grade', 'education', 'experience', 'portfolio']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['name'].label = 'Имя'
+        self.fields['surname'].label = 'Фамилия'
+        self.fields['status'].label = 'Готовность к работе'
+        self.fields['salary'].label = 'Ожидаемое вознаграждение'
+        self.fields['specialty'].label = 'Специализвация'
+        self.fields['specialty'].empty_label = 'Выберите специализацию'
+        self.fields['grade'].label = 'Квалификация'
+        self.fields['education'].label = 'Образование'
+        self.fields['experience'].label = 'Опыт работы'
+        self.fields['portfolio'].label = 'Ссылка на портфолио'
+        self.fields['portfolio'].widget.attrs = {'placeholder': 'http://anylink.github.io'}
+        self.fields['education'].widget.attrs = {'rows': 4}
+        self.fields['experience'].widget.attrs = {'rows': 4}
+
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.layout = Layout(
+            Row(
+                Column('name', css_class='form-group col-md-6 mb-0'),
+                Column('surname', css_class='form-group col-md-6 mb-0'),
+                css_class='form-row'
+            ),
+            Row(
+                Column('status', css_class='form-group col-md-6 mb-0'),
+                Column('salary', css_class='form-group col-md-6 mb-0'),
+                css_class='form-row'
+            ),
+            Row(
+                Column('specialty', css_class='form-group col-md-6 mb-0'),
+                Column('grade', css_class='form-group col-md-6 mb-0'),
+                css_class='form-row'
+            ),
+            Row(
+                Column('education', css_class='form-group col-md-12'),
+            ),
+            Row(
+                Column('experience', css_class='form-group col-md-12'),
+            ),
+            Row(
+                Column('portfolio', css_class='form-group col-md-12'),
+            ),
+            Submit('submit', 'Сохранить', css_class='col-8 col-lg-4 offset-2 offset-lg-4')
+        )
 
 
 class UpdateVacancyForm(forms.ModelForm):
