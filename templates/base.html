@@ -31,16 +31,9 @@
               <button type="button" class="btn dropdown-toggle font-weight-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 {{user.username}}
               </button>
-              <div class="dropdown-menu dropdown-menu-right mt-3">
-                <a href="#" class="dropdown-item py-2">Профиль</a>
-                <a href="#" class="dropdown-item py-2">Резюме</a>
-                {% if company %}
-                <a href="{% url 'my_company' %}" class="dropdown-item py-2">Компания</a>
-                {% else %}
-                <a href="{% url 'lets_start_company' %}" class="dropdown-item py-2">Компания</a>
-                {% endif %}
-                <a href="{% url 'logout' %}" class="dropdown-item py-2">Выйти</a>
-              </div>
+              {% load my_tags %}
+              {% show_drop_down_menu %}
+
             </div>
           </li>
           {% else %}
