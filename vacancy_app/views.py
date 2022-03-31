@@ -8,6 +8,15 @@ from .forms import AddApplication
 # Create your views here.
 
 
+class VacancySearch(ListView):
+    model = Vacancy
+    template_name = 'vacancy_app/search_results.html'
+    context_object_name = 'vacancies'
+
+    def get_queryset(self):
+        return Vacancy.objects.filter(title__icontains=self.request.GET.get("q"))
+
+
 class VacancyDetail(DetailView, CreateView):
     model = Vacancy
     template_name = 'vacancy_app/vacancy.html'
