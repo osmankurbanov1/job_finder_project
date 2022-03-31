@@ -1,0 +1,13 @@
+<div class="dropdown-menu dropdown-menu-right mt-3">
+    {% if resume %}
+    <a href="{% url 'my_resume' %}" class="dropdown-item py-2">Резюме</a>
+    {% else %}
+    <a href="{% url 'resume_lets_start' %}" class="dropdown-item py-2">Резюме</a>
+    {% endif %}
+    {% if company %}
+    <a href="{% url 'my_company' %}" class="dropdown-item py-2">Компания</a>
+    {% else %}
+    <a href="{% url 'lets_start_company' %}" class="dropdown-item py-2">Компания</a>
+    {% endif %}
+    <a href="{% url 'logout' %}" class="dropdown-item py-2">Выйти</a>
+</div>
