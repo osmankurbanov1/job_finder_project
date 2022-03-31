@@ -25,11 +25,11 @@ from django.contrib.auth.views import LogoutView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', vacancy_views.SpecialtyHome.as_view(), name='index'),
-    path('vacancies/', include('vacancy_app.urls')),
+    path('search/', vacancy_views.VacancySearch.as_view(), name='vacancy_search'),
     path('companies/<int:id>', company_views.CompanyDetail.as_view(), name='company_detail'),
+    path('vacancies/', include('vacancy_app.urls')),
     path('mycompany/', include('admin_app.my_company_urls')),
     path('myresume/', include('admin_app.my_resume_urls')),
-
 ]
 
 urlpatterns += [
