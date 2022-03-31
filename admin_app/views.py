@@ -9,9 +9,35 @@ import datetime
 from crum import get_current_user
 from .forms import AddCompanyForm, AddVacancyForm, UpdateCompanyForm, UpdateVacancyForm
 from django.contrib.auth.views import LoginView
-from .forms import RegisterUserForm, LoginForm
+from .forms import RegisterUserForm, LoginForm, AddResumeForm
+from .models import Resume
 
 # Create your views here.
+
+
+class UpdateResume(UpdateView):
+    model = Resume
+    form_class = AddResumeForm
+    template_name = 'admin_app/my_resume.html'
+    success_url = '/myresume'
+
+    def get_object(self, queryset=None):
+        try:
+            obj = Resume.objects.get(user=get_current_user())
+        except Resume.DoesNotExist:
+            return None
+        return obj
+
+
+class CreateResume(CreateView):
+    form_class = AddResumeForm
+    template_name = 'admin_app/resume_create.html'
+
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        obj.user = self.request.user
+        obj.save()
+        return HttpResponseRedirect('/myresume/')
 
 
 class UpdateVacancy(UpdateView, ListView):
@@ -68,6 +94,10 @@ class AddCompany(CreateView):
 
 def show_company_precreate(request):
     return render(request, 'admin_app/company_create.html')
+
+
+def show_resume_precreate(request):
+    return render(request, 'admin_app/resume_precreate.html')
 
 
 class VacancyList(ListView):
