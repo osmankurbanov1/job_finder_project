@@ -15,12 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from vacancy_app import views as vacancy_views
-from company_app import views as company_views
-from admin_app import views as admin_views
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth.views import LogoutView
+
+from vacancy_app import views as vacancy_views
+from company_app import views as company_views
+from admin_app import views as admin_views
+from .yasg import urlpatterns as doc_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -32,12 +34,31 @@ urlpatterns = [
     path('myresume/', include('admin_app.my_resume_urls')),
 ]
 
+# Authoritation routs
+
 urlpatterns += [
     path('login', admin_views.MyLoginView.as_view(), name='login'),
     path('register', admin_views.MySignupView.as_view(), name='register'),
     path('logout', LogoutView.as_view(), name='logout'),
 ]
 
+urlpatterns += doc_urls
+
+# API
+
+urlpatterns += [
+    path('api/v1/vacancies/', vacancy_views.VacancyListCreateAPIView.as_view()),
+    path('api/v1/vacancies/<int:pk>/', vacancy_views.VacancyDetailAPIView.as_view()),
+    path('api/v1/vacancies/<str:company>/', vacancy_views.VacancyRelatedCompanyList.as_view()),
+    path('api/v1/specialties/', vacancy_views.SpecialtyListAPIView.as_view()),
+    path('api/v1/specialties/<int:pk>/', vacancy_views.SpecialtyDetailAPIView.as_view()),
+    path('api/v1/companies/', company_views.CompanyListCreateAPIView.as_view()),
+    path('api/v1/companies/<int:pk>/', company_views.CompanyDetailAPIView.as_view()),
+    path('api/v1/applications/', vacancy_views.ApplicationCreateAPIView.as_view()),
+    path('api/v1/resumes/', admin_views.CreateResumeAPIView.as_view()),
+    path('api/v1/resumes/<int:pk>/', admin_views.UpdateResumeAPIView.as_view()),
+
+]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,
