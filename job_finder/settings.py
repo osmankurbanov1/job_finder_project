@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'company_app',
     'crispy_forms',
     'admin_app',
+    'rest_framework',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
