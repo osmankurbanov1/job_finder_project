@@ -1,6 +1,8 @@
 from django.db import models
-from company_app.models import Company
 from django.contrib.auth.models import User
+
+from company_app.models import Company
+
 # Create your models here.
 
 
