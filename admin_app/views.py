@@ -1,18 +1,40 @@
+import datetime
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, reverse
 from django.views.generic import ListView, UpdateView, CreateView
-# from vacancy_app.views import Vacancy
-# from company_app.views import Company
+from django.contrib.auth.views import LoginView
+
+from rest_framework.generics import CreateAPIView, RetrieveUpdateAPIView
+from crum import get_current_user
+
 from vacancy_app.models import Vacancy
 from company_app.models import Company
-import datetime
-from crum import get_current_user
 from .forms import AddCompanyForm, AddVacancyForm, UpdateCompanyForm, UpdateVacancyForm
-from django.contrib.auth.views import LoginView
 from .forms import RegisterUserForm, LoginForm, AddResumeForm
 from .models import Resume
+from .serializers import ResumeSerializer
+from .permissions import IsAuthenticatedAndHasNotResume, IsAuthenticatedAndHasTheResume
 
 # Create your views here.
+
+
+class CreateResumeAPIView(CreateAPIView):
+    """
+    post new Resume
+    """
+
+    serializer_class = ResumeSerializer
+    permission_classes = (IsAuthenticatedAndHasNotResume, )
+
+
+class UpdateResumeAPIView(RetrieveUpdateAPIView):
+    """
+    update the Resume
+    """
+
+    queryset = Resume.objects.all()
+    serializer_class = ResumeSerializer
+    permission_classes = (IsAuthenticatedAndHasTheResume, )
 
 
 class UpdateResume(UpdateView):
