@@ -1,8 +1,31 @@
 from django.views.generic import ListView
-from .models import Company
-from vacancy_app.models import Vacancy
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateAPIView
 
+from vacancy_app.models import Vacancy
+from .permissions import IsAuthenticatedAndHaveNotCompanyOrReadOnly, IsCompanyOwnerOrReadOnly
+from .models import Company
+from .serializers import CompanySerializer
 # Create your views here.
+
+
+class CompanyListCreateAPIView(ListCreateAPIView):
+    """
+    get all Companies
+    create new Company
+    """
+    queryset = Company.objects.all()
+    serializer_class = CompanySerializer
+    permission_classes = (IsAuthenticatedAndHaveNotCompanyOrReadOnly, )
+
+
+class CompanyDetailAPIView(RetrieveUpdateAPIView):
+    """
+    get the instance of Company
+    update the instance of Company
+    """
+    queryset = Company.objects.all()
+    serializer_class = CompanySerializer
+    permission_classes = (IsCompanyOwnerOrReadOnly, )
 
 
 class CompanyDetail(ListView):
