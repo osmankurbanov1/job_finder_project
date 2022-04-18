@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 
 urlpatterns = [
@@ -12,4 +12,7 @@ urlpatterns = [
     path('applications/', views.ApplicationCreateAPIView.as_view()),
     path('resumes/', views.CreateResumeAPIView.as_view()),
     path('resumes/<int:pk>/', views.UpdateResumeAPIView.as_view()),
+    path('dj-rest-auth/', include('dj_rest_auth.urls')),
+    path('dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
+
 ]
