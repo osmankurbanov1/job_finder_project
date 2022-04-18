@@ -42,23 +42,13 @@ urlpatterns += [
     path('logout', LogoutView.as_view(), name='logout'),
 ]
 
-urlpatterns += doc_urls
-
 # API
 
 urlpatterns += [
-    path('api/v1/vacancies/', vacancy_views.VacancyListCreateAPIView.as_view()),
-    path('api/v1/vacancies/<int:pk>/', vacancy_views.VacancyDetailAPIView.as_view()),
-    path('api/v1/vacancies/<str:company>/', vacancy_views.VacancyRelatedCompanyList.as_view()),
-    path('api/v1/specialties/', vacancy_views.SpecialtyListAPIView.as_view()),
-    path('api/v1/specialties/<int:pk>/', vacancy_views.SpecialtyDetailAPIView.as_view()),
-    path('api/v1/companies/', company_views.CompanyListCreateAPIView.as_view()),
-    path('api/v1/companies/<int:pk>/', company_views.CompanyDetailAPIView.as_view()),
-    path('api/v1/applications/', vacancy_views.ApplicationCreateAPIView.as_view()),
-    path('api/v1/resumes/', admin_views.CreateResumeAPIView.as_view()),
-    path('api/v1/resumes/<int:pk>/', admin_views.UpdateResumeAPIView.as_view()),
-
+    path('api/v1/', include('api.urls')),
 ]
+
+urlpatterns += doc_urls
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,
