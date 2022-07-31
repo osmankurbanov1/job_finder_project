@@ -14,6 +14,10 @@ All requirements are listed in the file: `requirements.txt`.
 * Django Framework
 * SQLite
 
+##### Run the project
+
+`python manage.py runserver`
+
 ##### Below are some screenshots
 
 ![alt text](screenshots/screenshot_4.png "The project screenshot")
